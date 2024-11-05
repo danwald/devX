@@ -22,7 +22,6 @@ for merge in $merges; do
     fi
     durations+=($duration)
 done
-#echo ${durations[@]}
 echo ${durations[@]}| python -c "
 import sys,statistics;\
     ns=list(map(lambda x: x/3600, map(int, sys.stdin.readline().split())));\
