@@ -2,10 +2,15 @@
 
 # Navigate to the repository directory
 pushd $1 > /dev/null || { echo "Repository not found"; exit 1; }
+BRANCH=${2:-staging}
+$FROM_DATE=${FROM_DATE:-2024-07-01}
+$START_DT=${TO_DATE:-2024-10-01}
+$END_DT=${TO_DATE:-2024-10-01}
 
-git fetch origin staging > /dev/null 2>&1 || { echo "Failed to fetch repository $1"; exit 1; }
+echo "Fetching repository $1 @$BRANCH [$START_DT-$END_DT]..."
+git fetch origin $BRANCH staging > /dev/null 2>&1 || { echo "Failed to fetch repository $1"; exit 1; }
 
-merges=`git log --merges --pretty=format:"%h;%ct" --author='^(?!github-actions).*$' --perl-regexp --since="2024-07-01" --before="2024-10-01" origin/staging`
+merges=`git log --merges --pretty=format:"%h;%ct" --author='^(?!github-actions).*$' --perl-regexp --since="$START_DT" --before="$END_DT" origin/$BRANCH`
 durations=()
 for merge in $merges; do
     sha=`echo $merge | cut -d';' -f1`
