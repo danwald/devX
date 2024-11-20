@@ -8,7 +8,7 @@ END_DATE=${END_DATE:=2024-10-01}
 MIN_SECS=${MIN_SECS:=432000} # 5 days
 MAX_SECS=${MAX_SECS:=2160000} # 30 days
 
-echo -n "Fetching repository $1 @$BRANCH[$START_DATE:$END_DATE]..."
+echo -n "@$BRANCH[$START_DATE:$END_DATE] [count|min|max|avg|media] $1 "
 git fetch origin $BRANCH staging > /dev/null 2>&1 || { echo "Failed to fetch repository $1"; exit 1; }
 
 merges=`git log --merges --pretty=format:"%h;%ct" --author='^(?!github-actions).*$' --perl-regexp --since="$START_DATE" --before="$END_DATE" origin/$BRANCH`
@@ -29,7 +29,7 @@ done
 echo ${durations[@]}| python -c "
 import sys,statistics;\
     ns=list(map(lambda x: x/86400, map(int, sys.stdin.readline().split())));\
-    print('count/min/max/avg/median:',\
+    print(\
         len(ns),\
         round(min(ns),5),\
         round(max(ns),2),\
