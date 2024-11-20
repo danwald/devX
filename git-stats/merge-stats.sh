@@ -6,6 +6,7 @@ BRANCH=${2:-main}
 STATE_DATE=${START_DATE:=2024-07-01}
 END_DATE=${END_DATE:=2024-10-01}
 MIN_SECS=${MIN_SECS:=432000} # 5 days
+MAX_SECS=${MAX_SECS:=2160000} # 30 days
 
 echo "Fetching repository $1 @$BRANCH[$START_DATE:$END_DATE]..."
 git fetch origin $BRANCH staging > /dev/null 2>&1 || { echo "Failed to fetch repository $1"; exit 1; }
@@ -18,6 +19,9 @@ for merge in $merges; do
     opened=`git log "$sha^1..$sha^2" --format="%ct" | tail -1`
     duration=$((closed-opened))
     if [ $duration -lt $MIN_SECS ]; then
+        continue
+    fi
+    if [ $duration -gt $MAX_SECS ]; then
         continue
     fi
     durations+=($duration)
