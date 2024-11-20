@@ -8,7 +8,7 @@ END_DATE=${END_DATE:=2024-10-01}
 MIN_SECS=${MIN_SECS:=432000} # 5 days
 MAX_SECS=${MAX_SECS:=2160000} # 30 days
 
-echo "Fetching repository $1 @$BRANCH[$START_DATE:$END_DATE]..."
+echo -n "Fetching repository $1 @$BRANCH[$START_DATE:$END_DATE]..."
 git fetch origin $BRANCH staging > /dev/null 2>&1 || { echo "Failed to fetch repository $1"; exit 1; }
 
 merges=`git log --merges --pretty=format:"%h;%ct" --author='^(?!github-actions).*$' --perl-regexp --since="$START_DATE" --before="$END_DATE" origin/$BRANCH`
