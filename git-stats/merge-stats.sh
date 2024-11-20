@@ -3,7 +3,7 @@
 # Navigate to the repository directory
 pushd $1 > /dev/null || { echo "Repository not found"; exit 1; }
 BRANCH=${2:-main}
-STATE_DATE=${START_DATE:=2024-07-01}
+START_DATE=${START_DATE:=2024-07-01}
 END_DATE=${END_DATE:=2024-10-01}
 MIN_SECS=${MIN_SECS:=432000} # 5 days
 MAX_SECS=${MAX_SECS:=2160000} # 30 days
