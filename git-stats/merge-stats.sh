@@ -28,7 +28,7 @@ for merge in $merges; do
 done
 echo ${durations[@]}| python -c "
 import sys,statistics;\
-    ns=list(map(lambda x: x/3600, map(int, sys.stdin.readline().split())));\
+    ns=list(map(lambda x: x/86400, map(int, sys.stdin.readline().split())));\
     print('count/min/max/avg/median:',\
         len(ns),\
         round(min(ns),5),\
